@@ -6,46 +6,31 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
 
 
 public class WordViewModel extends AndroidViewModel {
     private final WordRepo wordRepo = new WordRepo(getApplication());
-    private final MediatorLiveData<WordState> wordState = new MediatorLiveData<>();
-    private Word lastWord = new Word();
+    public MutableLiveData<Word> lastWord;
 
     public WordViewModel(@NonNull Application application) {
         super(application);
-        wordState.setValue(WordState.NONE);
+        lastWord = wordRepo.word;
     }
 
-    public Word getWord(String word) {
-       String last = lastWord.getWord();
-       if (TextUtils.isEmpty(word) || !word.matches("[a-zA-Z]+")){
-            wordState.postValue(WordState.ERROR);
-       } else if (last != null && last.equals(word)) {
-           Log.w("WordViewModel", "Ignoring duplicate request with word");
-       } else if (wordState.getValue() != WordState.IN_PROGRESS){
-           requestWord(word);
-       }
-       return lastWord;
-    }
-
-    private void requestWord(String word) {
-        wordState.postValue(WordState.IN_PROGRESS);
-        wordRepo.findWord(word);
-        final Word wordFromApi = WordRepo.word;
-        if (wordFromApi != null) {
-            lastWord = wordFromApi;
-            wordState.postValue(WordState.SUCCESS);
+    public LiveData<Word> getWord(String word) {
+        String last = lastWord.getValue().getWord();
+        if (TextUtils.isEmpty(word) || !word.matches("[a-zA-Z]+")) {
+            lastWord.setValue(null);
+        } else if (last != null && last.equals(word)) {
+            Log.w("WordViewModel", "Ignoring duplicate request with word");
         } else {
-            lastWord = null;
-            wordState.postValue(WordState.FAILED);
+            Log.w("WordViewModel", "dsadas");
+            lastWord = wordRepo.findWord(word);
         }
-    }
-
-    enum WordState {
-        FAILED, ERROR, NONE, IN_PROGRESS, SUCCESS
+        return lastWord;
     }
 
 }

@@ -9,13 +9,13 @@ import retrofit2.http.Path;
 
 public interface DictionaryApi {
 
-    class WordPlain {  //Rename to DictionaryResponse
+    class WordPlain {
         public String word;
         public String pronunciation;
-        public List<Definition> definitions;
+        public List<DefinitionPlain> definitions;
     }
 
-    class Definition {
+    class DefinitionPlain {
         public String definition;
         public String example;
         public String type;

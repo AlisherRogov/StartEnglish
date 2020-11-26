@@ -13,7 +13,7 @@ public class Word {
     }
 
     public Word() {
-        this.word = "";
+        this.word = "Empty Word";
         this.pronunciation = "";
         this.definitions = null;
     }
@@ -64,6 +64,21 @@ public class Word {
         public String getEmoji() {
             return emoji;
         }
+
+        @Override
+        public String toString() {
+            return "\n" +
+                    "Definition='" + definition + '\'' +
+                    ",\nExample='" + example + '\'' +
+                    ",\nType='" + type + '\'';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "word =' " + word + '\'' +
+                ", pronunciation='" + pronunciation + '\'' +
+                ", definitions =" + definitions;
     }
 }
 

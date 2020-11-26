@@ -1,12 +1,17 @@
 package ru.technopark.startenglish;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 
@@ -27,16 +32,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         WordViewModel v = new ViewModelProvider(this).get(WordViewModel.class);
-
         TextView textView = findViewById(R.id.word);
-
-        DictionaryApi dictionaryApi = ApiRepo.from(this).getDictionaryApi();
-        final String[] word = new String[1];
-        Word w = v.getWord("owl");
-//        Log.d("Donee", w.getWord());
-        String tmp = w.getWord() +"\n"+ w.getPronunciation() + "\n";
-        textView.setText(tmp);
         EditText enter = findViewById(R.id.enter);
-    }
+        Button button = findViewById(R.id.search);
+        button.setOnClickListener(view -> v.getWord(String.valueOf(enter.getText())));
 
+        v.lastWord.observe(this, word -> {
+            if (word.getWord().equals("")) {
+                textView.setText("Empty word");
+            } else {
+                textView.setText(word.getWord() + "\n" + word.getDefinitions());
+            }
+        });
+    }
 }

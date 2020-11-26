@@ -11,7 +11,6 @@ public class ApiRepo {
     private final DictionaryApi dictionaryApi;
 
     public ApiRepo() {
-
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(MoshiConverterFactory.create())
                 .baseUrl(BASE_URL)
