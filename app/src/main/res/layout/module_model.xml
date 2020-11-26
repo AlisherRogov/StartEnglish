@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cardMargin"
+        android:layout_marginBottom="@dimen/cardMargin"
+        android:layout_marginStart="@dimen/cardMargin"
+        android:layout_marginEnd="@dimen/cardMargin"
+        card_view:cardCornerRadius="@dimen/cardCornerRadius"
+        card_view:cardBackgroundColor="@color/cardBackground">
+
+        <LinearLayout
+            android:id="@+id/module_card"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/module_model_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:layout_marginStart="20dp"
+                android:textSize="48sp"
+                android:text="@string/module_model_name" />
+
+            <TextView
+                android:id="@+id/module_model_word_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:layout_marginStart="20dp"
+                android:textSize="48sp"
+                android:text="@string/module_model_word_count" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
