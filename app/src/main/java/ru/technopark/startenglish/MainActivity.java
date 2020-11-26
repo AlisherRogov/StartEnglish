@@ -30,19 +30,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        WordViewModel v = new ViewModelProvider(this).get(WordViewModel.class);
-        TextView textView = findViewById(R.id.word);
-        EditText enter = findViewById(R.id.enter);
-        Button button = findViewById(R.id.search);
-        button.setOnClickListener(view -> v.getWord(String.valueOf(enter.getText())));
-
-        v.lastWord.observe(this, word -> {
-            if (word.getWord().equals("")) {
-                textView.setText("Empty word");
-            } else {
-                textView.setText(word.getWord() + "\n" + word.getDefinitions());
-            }
-        });
     }
 }
