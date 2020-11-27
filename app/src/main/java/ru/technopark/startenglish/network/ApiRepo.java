@@ -2,6 +2,8 @@ package ru.technopark.startenglish.network;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 import ru.technopark.startenglish.ApplicationModified;
@@ -18,10 +20,12 @@ public class ApiRepo {
         dictionaryApi = retrofit.create(DictionaryApi.class);
     }
 
+    @NonNull
     public DictionaryApi getDictionaryApi() {
         return dictionaryApi;
     }
 
+    @NonNull
     public static ApiRepo from(Context context) {
         return ApplicationModified.from(context).getApi();
     }

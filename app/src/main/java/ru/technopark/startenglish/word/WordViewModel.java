@@ -20,17 +20,15 @@ public class WordViewModel extends AndroidViewModel {
         lastWord = wordRepo.word;
     }
 
-    public LiveData<Word> getWord(String word) {
+    public void getWord(String word) {
         String last = lastWord.getValue().getWord();
         if (TextUtils.isEmpty(word) || !word.matches("[a-zA-Z]+")) {
             lastWord.setValue(null);
-        } else if (last != null && last.equals(word)) {
+        } else if (last.equals(word)) {
             Log.w("WordViewModel", "Ignoring duplicate request with word");
         } else {
-            Log.w("WordViewModel", "dsadas");
+            Log.w("WordViewModel", "Requesting word");
             lastWord = wordRepo.findWord(word);
         }
-        return lastWord;
     }
-
 }

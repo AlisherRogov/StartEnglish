@@ -1,12 +1,18 @@
 package ru.technopark.startenglish.word;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.List;
 
 public class Word {
+    @NonNull
     private String word;
+    @Nullable
     private String pronunciation;
+    @Nullable
     private List<Definition> definitions;
 
-    public Word(String word, String pronunciation, List<Definition> definitions) {
+    public Word(@NonNull String word, @Nullable String pronunciation, @Nullable List<Definition> definitions) {
         this.word = word;
         this.pronunciation = pronunciation;
         this.definitions = definitions;
@@ -18,14 +24,17 @@ public class Word {
         this.definitions = null;
     }
 
+    @NonNull
     public String getWord() {
         return word;
     }
 
+    @Nullable
     public String getPronunciation() {
         return pronunciation;
     }
 
+    @Nullable
     public List<Definition> getDefinitions() {
         return definitions;
     }
@@ -66,6 +75,7 @@ public class Word {
         }
 
         @Override
+        @NonNull
         public String toString() {
             return "\n" +
                     "Definition='" + definition + '\'' +
@@ -75,6 +85,7 @@ public class Word {
     }
 
     @Override
+    @NonNull
     public String toString() {
         return "word =' " + word + '\'' +
                 ", pronunciation='" + pronunciation + '\'' +
