@@ -31,6 +31,7 @@ public class ModulesFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.module_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setAdapter(moduleAdapter);
+        recyclerView.setHasFixedSize(true);
 
         return view;
     }

@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import ru.technopark.startenglish.R;
 
 public class WordsFragment extends Fragment {
-    private static String MODULENAME = "moduleName";
+    private final static String MODULENAME = "moduleName";
     private WordAdapter wordAdapter;
     private String moduleName;
 
@@ -36,6 +36,7 @@ public class WordsFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.word_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setAdapter(wordAdapter);
+        recyclerView.setHasFixedSize(true);
         return view;
     }
 

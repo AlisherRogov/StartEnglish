@@ -1,5 +1,7 @@
 package ru.technopark.startenglish.words;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,17 +27,19 @@ public class WordDataSource {
     }
 
     public static class WordModel {
+        @NonNull
         private String name;
 
-        public WordModel(String name) {
+        public WordModel(@NonNull String name) {
             this.name = name;
         }
 
+        @NonNull
         public String getName() {
             return name;
         }
 
-        public void setName(String name) {
+        public void setName(@NonNull String name) {
             this.name = name;
         }
     }

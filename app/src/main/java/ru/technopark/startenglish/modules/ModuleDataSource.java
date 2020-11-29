@@ -1,10 +1,11 @@
 package ru.technopark.startenglish.modules;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ModuleDataSource {
-
     private final static ModuleDataSource ourInstance = new ModuleDataSource();
     private final int INITIAL_CAPACITY = 20;
     private final List<ModuleModel> list;
@@ -25,10 +26,11 @@ public class ModuleDataSource {
     }
 
     public static class ModuleModel {
+        @NonNull
         private String name;
         private int wordCount;
 
-        public ModuleModel(String name, int wordCount) {
+        public ModuleModel(@NonNull String name, int wordCount) {
             this.name = name;
             this.wordCount = wordCount;
         }
@@ -41,7 +43,7 @@ public class ModuleDataSource {
             return wordCount;
         }
 
-        public void setName(String name) {
+        public void setName(@NonNull String name) {
             this.name = name;
         }
 
