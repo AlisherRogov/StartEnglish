@@ -1,14 +1,23 @@
 package ru.technopark.startenglish.word;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
 import java.util.List;
 
+@Entity(tableName = "word_table")
 public class Word {
+    @PrimaryKey(autoGenerate = true)
+    private long wordId;
+
     @NonNull
     private String word;
     @Nullable
     private String pronunciation;
+
+    @Ignore
     @Nullable
     private List<Definition> definitions;
 
@@ -34,54 +43,29 @@ public class Word {
         return pronunciation;
     }
 
+    public long getWordId() {
+        return wordId;
+    }
+
+    public void setWordId(long wordId) {
+        this.wordId = wordId;
+    }
+
     @Nullable
     public List<Definition> getDefinitions() {
         return definitions;
     }
 
-    static class Definition {
-        private String definition;
-        private String example;
-        private String type;
-        private String image_url;
-        private String emoji;
+    public void setWord(@NonNull String word) {
+        this.word = word;
+    }
 
-        public Definition(String definition, String example, String type, String image_url, String emoji) {
-            this.definition = definition;
-            this.example = example;
-            this.type = type;
-            this.image_url = image_url;
-            this.emoji = emoji;
-        }
+    public void setPronunciation(@Nullable String pronunciation) {
+        this.pronunciation = pronunciation;
+    }
 
-        public String getDefinition() {
-            return definition;
-        }
-
-        public String getExample() {
-            return example;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public String getImage_url() {
-            return image_url;
-        }
-
-        public String getEmoji() {
-            return emoji;
-        }
-
-        @Override
-        @NonNull
-        public String toString() {
-            return "\n" +
-                    "Definition='" + definition + '\'' +
-                    ",\nExample='" + example + '\'' +
-                    ",\nType='" + type + '\'';
-        }
+    public void setDefinitions(@Nullable List<Definition> definitions) {
+        this.definitions = definitions;
     }
 
     @Override
@@ -91,5 +75,6 @@ public class Word {
                 ", pronunciation='" + pronunciation + '\'' +
                 ", definitions =" + definitions;
     }
+
 }
 

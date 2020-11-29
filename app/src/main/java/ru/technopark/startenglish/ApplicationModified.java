@@ -5,6 +5,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import ru.technopark.startenglish.db.AppDatabase;
 import ru.technopark.startenglish.network.ApiRepo;
 
 public class ApplicationModified extends Application {
@@ -14,6 +15,7 @@ public class ApplicationModified extends Application {
     public void onCreate() {
         super.onCreate();
         apiRepo = new ApiRepo();
+        AppDatabase.getDatabase(this);
     }
 
     public ApiRepo getApi() {
