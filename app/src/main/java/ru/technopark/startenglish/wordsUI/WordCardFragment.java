@@ -32,21 +32,6 @@ public class WordCardFragment extends Fragment {
 
         if (getArguments() != null)
             wordName = getArguments().getString(WORDNAME, "default");
-
-/*        WordViewModel v = new ViewModelProvider(this).get(WordViewModel.class);
-        v.getWord(wordName);
-
-        v.lastWord.observe(this, word -> {
-            if (word == null) {
-                System.out.println("NULL in observe lambda");
-            } else {
-                if (word.getWord().equals("")) {
-                    definition = "Some error";
-                } else {
-                    definition = word.getWord() + "\n" + word.getDefinitions();
-                }
-            }
-        });*/
     }
 
     @Nullable
@@ -63,6 +48,7 @@ public class WordCardFragment extends Fragment {
                 System.out.println("NULL in observe lambda");
             } else {
                 if (!word.getWord().equals("Empty Word")) {
+                    wvm.saveWord();
                     definition = word.getWord() + "\n" + word.getDefinitions();
                     tv.setText(definition);
                 }
