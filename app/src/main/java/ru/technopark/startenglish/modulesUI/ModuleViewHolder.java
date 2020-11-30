@@ -1,4 +1,4 @@
-package ru.technopark.startenglish.modules;
+package ru.technopark.startenglish.modulesUI;
 
 import android.view.View;
 import android.widget.LinearLayout;

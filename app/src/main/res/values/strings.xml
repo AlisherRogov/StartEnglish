@@ -2,4 +2,10 @@
     <string name="app_name">StartEnglish</string>
     <string name="module_model_name">qwerty</string>
     <string name="module_model_word_count">module_model_word_count</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_add_word">Add word</string>
+    <string name="action_add_module">Add module</string>
+    <string name="find_word">find word</string>
+    <string name="add_word">add word</string>
 </resources>

@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_centerHorizontal="true"
     android:layout_gravity="center"
-    tools:context=".words.WordsFragment">
+    tools:context=".wordsUI.WordsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/word_recycler_view"
