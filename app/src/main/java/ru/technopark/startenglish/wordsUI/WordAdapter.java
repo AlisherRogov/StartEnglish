@@ -1,4 +1,4 @@
-package ru.technopark.startenglish.modules;
+package ru.technopark.startenglish.wordsUI;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,27 +9,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import ru.technopark.startenglish.R;
 
-public class ModuleAdapter extends RecyclerView.Adapter<ModuleViewHolder> {
-    private final ModuleDataSource dataSource = ModuleDataSource.getInstance();
+public class WordAdapter extends RecyclerView.Adapter<WordViewHolder> {
+    private final WordDataSource dataSource;
 
-    public ModuleAdapter() {
+    public WordAdapter(String moduleName) {
+        dataSource = WordDataSource.getInstance(moduleName);
     }
 
     @NonNull
     @Override
-    public ModuleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public WordViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater
                 .from(parent.getContext())
-                .inflate(R.layout.module_model, parent, false);
-        return new ModuleViewHolder(view);
+                .inflate(R.layout.word_model, parent, false);
+        return new WordViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ModuleViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull WordViewHolder holder, int position) {
         String name = dataSource.getList().get(position).getName();
-        int wordCount = dataSource.getList().get(position).getWordCount();
         holder.getName().setText(name);
-        holder.getWordCount().setText(String.valueOf(wordCount));
     }
 
     @Override

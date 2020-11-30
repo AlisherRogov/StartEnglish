@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_centerHorizontal="true"
     android:layout_gravity="center"
-    tools:context=".modules.ModulesFragment">
+    tools:context=".modulesUI.ModulesFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/module_recycler_view"
