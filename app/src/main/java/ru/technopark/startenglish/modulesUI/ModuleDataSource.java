@@ -1,4 +1,4 @@
-package ru.technopark.startenglish.modules;
+package ru.technopark.startenglish.modulesUI;
 
 import androidx.annotation.NonNull;
 
@@ -35,6 +35,7 @@ public class ModuleDataSource {
             this.wordCount = wordCount;
         }
 
+        @NonNull
         public String getName() {
             return name;
         }

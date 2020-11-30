@@ -1,4 +1,4 @@
-package ru.technopark.startenglish.words;
+package ru.technopark.startenglish.wordsUI;
 
 import android.view.View;
 import android.widget.TextView;
@@ -14,6 +14,11 @@ public class WordViewHolder extends RecyclerView.ViewHolder {
     public WordViewHolder(@NonNull View itemView) {
         super(itemView);
         name = itemView.findViewById(R.id.word_model_name);
+        name.setOnClickListener(v -> {
+            if (WordsFragment.onWordSelectedListener != null) {
+                WordsFragment.onWordSelectedListener.onWordSelected(String.valueOf(name.getText()));
+            }
+        });
     }
 
     public TextView getName() {

@@ -1,5 +1,6 @@
-package ru.technopark.startenglish.words;
+package ru.technopark.startenglish.wordsUI;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,15 +17,16 @@ import ru.technopark.startenglish.R;
 public class WordsFragment extends Fragment {
     private final static String MODULENAME = "moduleName";
     private WordAdapter wordAdapter;
-    private String moduleName;
+    private String moduleName = "def";
+    static OnWordSelectedListener onWordSelectedListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (savedInstanceState != null) {
-            moduleName = savedInstanceState.getString(MODULENAME, "default");
-        }
+        if (getArguments() != null)
+            moduleName = getArguments().getString(MODULENAME, "default");
+        // System.out.println(moduleName);
 
         wordAdapter = new WordAdapter(moduleName);
     }
@@ -40,4 +42,25 @@ public class WordsFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(MODULENAME, moduleName);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            onWordSelectedListener = (OnWordSelectedListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement OnWordSelectedListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        onWordSelectedListener = null;
+    }
 }
