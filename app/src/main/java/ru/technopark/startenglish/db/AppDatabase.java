@@ -9,12 +9,17 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import ru.technopark.startenglish.module.Module;
 import ru.technopark.startenglish.word.Definition;
 import ru.technopark.startenglish.word.Word;
 
-@Database(entities = {Word.class, Definition.class}, version = 1)
+@Database(entities = {Module.class, ModuleWordCrossRef.class, Word.class, Definition.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract WordDao wordDao();
+
+    public abstract ModuleDao moduleDao();
+
+    public abstract ModuleWordCrossRefDao moduleWordCrossRefDao();
 
     public abstract DefinitionDao definitionDao();
 

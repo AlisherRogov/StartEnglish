@@ -12,6 +12,7 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 import ru.technopark.startenglish.db.WordWithDefinition;
+import ru.technopark.startenglish.module.Module;
 
 
 public class WordViewModel extends AndroidViewModel {
@@ -20,7 +21,6 @@ public class WordViewModel extends AndroidViewModel {
     public LiveData<Word> lastWord;
 
     public LiveData<List<WordWithDefinition>> words = wordRepo.words;
-
 
     public WordViewModel(@NonNull Application application) {
         super(application);
@@ -39,7 +39,7 @@ public class WordViewModel extends AndroidViewModel {
         }
     }
 
-    public void saveWord() {
-        wordRepo.saveWordToLocalDb();
+    public void saveWord(Module moduleName) {
+        wordRepo.saveWordToLocalDb(moduleName);
     }
 }

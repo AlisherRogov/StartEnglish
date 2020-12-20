@@ -1,6 +1,9 @@
 package ru.technopark.startenglish.word;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -17,10 +20,16 @@ import java.util.concurrent.Executors;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.technopark.startenglish.MainActivity;
 import ru.technopark.startenglish.db.AppDatabase;
 import ru.technopark.startenglish.db.DefinitionDao;
+import ru.technopark.startenglish.db.ModuleDao;
+import ru.technopark.startenglish.db.ModuleWithWords;
+import ru.technopark.startenglish.db.ModuleWordCrossRef;
+import ru.technopark.startenglish.db.ModuleWordCrossRefDao;
 import ru.technopark.startenglish.db.WordDao;
 import ru.technopark.startenglish.db.WordWithDefinition;
+import ru.technopark.startenglish.module.Module;
 import ru.technopark.startenglish.network.ApiRepo;
 import ru.technopark.startenglish.network.DictionaryApi;
 
@@ -30,6 +39,8 @@ class WordRepo {
     private final String API_ACCESS_TOKEN = "Token 97c1baaec95afd5f61016eff7ec473ecfa29d3c6";
     private final DictionaryApi dictionaryApi;
     private final WordDao wordDao;
+    private final ModuleDao moduleDao;
+    private final ModuleWordCrossRefDao moduleWordCrossRefDao;
     private final DefinitionDao definitionDao;
     private final Context context;
     final MutableLiveData<Word> word = new MutableLiveData<>();
@@ -42,6 +53,8 @@ class WordRepo {
         dictionaryApi = ApiRepo.from(context).getDictionaryApi();
         AppDatabase db = AppDatabase.getDatabase(context);
         wordDao = db.wordDao();
+        moduleDao = db.moduleDao();
+        moduleWordCrossRefDao = db.moduleWordCrossRefDao();
         definitionDao = db.definitionDao();
         word.setValue(new Word());
         words = wordDao.getAllWords();
@@ -105,19 +118,28 @@ class WordRepo {
         return result;
     }
 
-    void saveWordToLocalDb() {
-        Word w = word.getValue();
-        if (w != null && w.getDefinitions() != null) {
-            AppDatabase.databaseWriteExecutor.execute(() -> {
-                if (!wordDao.isWordExist(w.getWord())) {
-                    long id = wordDao.insert(w);
-                    for (Definition def : w.getDefinitions()) {
-                        def.setDefinitionsWordId(id);
-                        definitionDao.insert(def);
-                        Log.d("myDb", "Saved To local DB  " + id);
+    void saveWordToLocalDb(Module module) {
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            if (!moduleDao.isModuleExist(module.getModuleName())) {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(() -> Toast.makeText(context, "Module does not exist", Toast.LENGTH_SHORT).show());
+            } else {
+                Word w = word.getValue();
+                if (w != null && w.getDefinitions() != null) {
+                    if (!wordDao.isWordExist(w.getWord())) {
+                        long id = wordDao.insert(w);
+                        for (Definition def : w.getDefinitions()) {
+                            def.setDefinitionsWordId(id);
+                            definitionDao.insert(def);
+                            Log.d("myDb", "Saved To local DB  " + id);
+                        }
                     }
+                    long wordId = wordDao.getWordId(w.getWord());
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(() -> Toast.makeText(context, module.getModuleName(), Toast.LENGTH_SHORT).show());
+                    moduleWordCrossRefDao.insert(new ModuleWordCrossRef(module.getModuleId(), wordId));
                 }
-            });
-        }
+            }
+        });
     }
 }
