@@ -1,6 +1,6 @@
 package ru.technopark.startenglish.word;
 
-import android.app.Activity;
+
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
@@ -20,11 +20,9 @@ import java.util.concurrent.Executors;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import ru.technopark.startenglish.MainActivity;
 import ru.technopark.startenglish.db.AppDatabase;
 import ru.technopark.startenglish.db.DefinitionDao;
 import ru.technopark.startenglish.db.ModuleDao;
-import ru.technopark.startenglish.db.ModuleWithWords;
 import ru.technopark.startenglish.db.ModuleWordCrossRef;
 import ru.technopark.startenglish.db.ModuleWordCrossRefDao;
 import ru.technopark.startenglish.db.WordDao;
@@ -37,6 +35,7 @@ class WordRepo {
     private final String API_ON_FAILURE_RESPONSE = "API not responding";
     private final String API_WORD_NOT_FOUND = "API can not find the word";
     private final String API_ACCESS_TOKEN = "Token 97c1baaec95afd5f61016eff7ec473ecfa29d3c6";
+    private final String MODULE_NOT_FOUND = "Module does not exist";
     private final DictionaryApi dictionaryApi;
     private final WordDao wordDao;
     private final ModuleDao moduleDao;
@@ -122,7 +121,7 @@ class WordRepo {
         AppDatabase.databaseWriteExecutor.execute(() -> {
             if (!moduleDao.isModuleExist(module.getModuleName())) {
                 Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(() -> Toast.makeText(context, "Module does not exist", Toast.LENGTH_SHORT).show());
+                handler.post(() -> Toast.makeText(context, MODULE_NOT_FOUND, Toast.LENGTH_SHORT).show());
             } else {
                 Word w = word.getValue();
                 if (w != null && w.getDefinitions() != null) {

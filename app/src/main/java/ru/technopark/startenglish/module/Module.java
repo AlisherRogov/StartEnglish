@@ -12,19 +12,12 @@ import ru.technopark.startenglish.word.Word;
 
 @Entity(tableName = "module_of_words")
 public class Module {
-    public long getModuleId() {
-        return moduleId;
-    }
-
-    public void setModuleId(long moduleId) {
-        this.moduleId = moduleId;
-    }
-
     @PrimaryKey(autoGenerate = true)
     private long moduleId;
     @NonNull
     private String moduleName;
     @Ignore
+    @Nullable
     private List<Word> words;
 
     public Module(@NonNull String moduleName, @Nullable List<Word> words) {
@@ -41,17 +34,25 @@ public class Module {
     public String getModuleName() {
         return moduleName;
     }
-
     public void setModuleName(@NonNull String moduleName) {
         this.moduleName = moduleName;
     }
 
+    @Nullable
     public List<Word> getWords() {
         return words;
     }
 
-    public void setWords(List<Word> words) {
+    public void setWords(@Nullable List<Word> words) {
         this.words = words;
+    }
+
+    public long getModuleId() {
+        return moduleId;
+    }
+
+    public void setModuleId(long moduleId) {
+        this.moduleId = moduleId;
     }
 }
 
