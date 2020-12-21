@@ -5,14 +5,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 import ru.technopark.startenglish.R;
+import ru.technopark.startenglish.module.Module;
+import ru.technopark.startenglish.module.ModuleViewModel;
 
 public class ModuleAdapter extends RecyclerView.Adapter<ModuleViewHolder> {
-    private final ModuleDataSource dataSource = ModuleDataSource.getInstance();
+    private final ModuleDataSource dataSource;
 
-    public ModuleAdapter() {
+    public ModuleAdapter(List<Module> modules) {
+        dataSource = ModuleDataSource.getInstance(modules);
     }
 
     @NonNull
@@ -26,8 +32,12 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ModuleViewHolder holder, int position) {
-        String name = dataSource.getList().get(position).getName();
-        int wordCount = dataSource.getList().get(position).getWordCount();
+//        System.out.println("QWERT_______________" + dataSource.getList().get(position).getModuleName());
+        String name = dataSource.getList().get(position).getModuleName();
+//        int wordCount = dataSource.getList().get(position).getWords().size();
+        int wordCount = 0;
+        if (dataSource.getList().get(position).getWords() != null)
+            wordCount = dataSource.getList().get(position).getWords().size();
         holder.getName().setText(name);
         holder.getWordCount().setText(String.valueOf(wordCount));
     }
