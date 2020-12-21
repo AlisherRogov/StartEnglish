@@ -1,17 +1,25 @@
 package ru.technopark.startenglish.wordsUI;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.technopark.startenglish.module.Module;
+import ru.technopark.startenglish.word.Word;
+import ru.technopark.startenglish.word.WordViewModel;
+
 public class WordDataSource {
     // private final static WordDataSource ourInstance = new WordDataSource();
-    private final int INITIAL_CAPACITY = 100;
-    private final List<WordModel> list;
+//    private final int INITIAL_CAPACITY = 100;
+//    private final List<WordModel> list;
+    private final List<Word> list;
 
-    private WordDataSource(String moduleName) {
-        list = new ArrayList<>(INITIAL_CAPACITY);
+    private WordDataSource(List<Word> words) {
+        list = words;
+
+/*        list = new ArrayList<>(INITIAL_CAPACITY);
         list.add(new WordModel("toy"));
         list.add(new WordModel("abandon"));
         list.add(new WordModel("ability"));
@@ -42,10 +50,19 @@ public class WordDataSource {
         list.add(new WordModel("urban"));
         list.add(new WordModel("wander"));
         list.add(new WordModel("yield"));
-        list.add(new WordModel("zone"));
+        list.add(new WordModel("zone"));*/
     }
 
-    static WordDataSource getInstance(String moduleName) {
+
+    static WordDataSource getInstance(List<Word> words) {
+        return new WordDataSource(words);
+    }
+
+    public List<Word> getList() {
+        return list;
+    }
+
+/*    static WordDataSource getInstance(String moduleName) {
         return new WordDataSource(moduleName);
     }
 
@@ -69,5 +86,5 @@ public class WordDataSource {
         public void setName(@NonNull String name) {
             this.name = name;
         }
-    }
+    }*/
 }
