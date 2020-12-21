@@ -14,13 +14,16 @@ import ru.technopark.startenglish.word.Word;
 @Dao
 public interface WordDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     long insert(Word word);
 
     @Transaction
     @Query("SELECT * FROM word_table WHERE word LIKE :search")
     LiveData<WordWithDefinition> getWord(String search);
 
+    @Transaction
+    @Query("SELECT wordId FROM word_table WHERE word LIKE :search")
+    long getWordId(String search);
 
     @Transaction
     @Query("SELECT * FROM word_table")

@@ -11,12 +11,10 @@ import java.util.List;
 public class Word {
     @PrimaryKey(autoGenerate = true)
     private long wordId;
-
     @NonNull
     private String word;
     @Nullable
     private String pronunciation;
-
     @Ignore
     @Nullable
     private List<Definition> definitions;
@@ -38,9 +36,17 @@ public class Word {
         return word;
     }
 
+    public void setWord(@NonNull String word) {
+        this.word = word;
+    }
+
     @Nullable
     public String getPronunciation() {
         return pronunciation;
+    }
+
+    public void setPronunciation(@Nullable String pronunciation) {
+        this.pronunciation = pronunciation;
     }
 
     public long getWordId() {
@@ -55,15 +61,6 @@ public class Word {
     public List<Definition> getDefinitions() {
         return definitions;
     }
-
-    public void setWord(@NonNull String word) {
-        this.word = word;
-    }
-
-    public void setPronunciation(@Nullable String pronunciation) {
-        this.pronunciation = pronunciation;
-    }
-
     public void setDefinitions(@Nullable List<Definition> definitions) {
         this.definitions = definitions;
     }
