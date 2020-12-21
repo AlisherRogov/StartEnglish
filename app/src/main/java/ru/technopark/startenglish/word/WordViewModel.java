@@ -19,12 +19,14 @@ public class WordViewModel extends AndroidViewModel {
     public static final String ERROR_SYMBOLS_ENTERED = "Error symbols entered";
     private final WordRepo wordRepo = new WordRepo(getApplication());
     public LiveData<Word> lastWord;
+    public LiveData<String> soundUrl;
 
     public LiveData<List<WordWithDefinition>> words = wordRepo.words;
 
     public WordViewModel(@NonNull Application application) {
         super(application);
         lastWord = wordRepo.word;
+        soundUrl = wordRepo.sound;
     }
 
     public void getWord(String word) {
@@ -36,10 +38,12 @@ public class WordViewModel extends AndroidViewModel {
         } else {
             Log.w("WordViewModel", "Requesting word");
             lastWord = wordRepo.findWord(word);
+            soundUrl = wordRepo.getWordSound(word);
         }
     }
 
     public void saveWord(Module moduleName) {
         wordRepo.saveWordToLocalDb(moduleName);
     }
+
 }
