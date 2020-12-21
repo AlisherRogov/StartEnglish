@@ -20,6 +20,7 @@ import java.util.concurrent.Executors;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.technopark.startenglish.ApplicationModified;
 import ru.technopark.startenglish.db.AppDatabase;
 import ru.technopark.startenglish.db.DefinitionDao;
 import ru.technopark.startenglish.db.ModuleDao;
@@ -30,6 +31,7 @@ import ru.technopark.startenglish.db.WordWithDefinition;
 import ru.technopark.startenglish.module.Module;
 import ru.technopark.startenglish.network.ApiRepo;
 import ru.technopark.startenglish.network.DictionaryApi;
+import ru.technopark.startenglish.network.SoundApi;
 
 class WordRepo {
     private final String API_ON_FAILURE_RESPONSE = "API not responding";
@@ -43,7 +45,8 @@ class WordRepo {
     private final DefinitionDao definitionDao;
     private final Context context;
     final MutableLiveData<Word> word = new MutableLiveData<>();
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private final ExecutorService executorService = Executors.newFixedThreadPool(2);
+    final MutableLiveData<String> sound = new MutableLiveData<>();
 
     final LiveData<List<WordWithDefinition>> words;
 
@@ -57,6 +60,7 @@ class WordRepo {
         definitionDao = db.definitionDao();
         word.setValue(new Word());
         words = wordDao.getAllWords();
+        sound.setValue("");
     }
 
     LiveData<Word> findWord(String wordToSearch) {
@@ -140,5 +144,28 @@ class WordRepo {
                 }
             }
         });
+    }
+
+    LiveData<String> getWordSound(String word) {
+        executorService.execute(() -> ApiRepo.from(context).getSoundApi().get(word)
+                .enqueue(new Callback<List<SoundApi.Entry>>() {
+                    @Override
+                    public void onResponse(Call<List<SoundApi.Entry>> call, Response<List<SoundApi.Entry>> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            String s = response.body().get(0).hwi.prs.get(0).sound.audio;
+                            sound.postValue("https://media.merriam-webster.com/audio/prons/en/us/mp3/" + s.charAt(0) + "/" + s + ".mp3");
+                            Log.d("resp", response.body().toString());
+
+                        } else {
+                            Toast.makeText(context, "API_WORD_NOT_FOUND", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<SoundApi.Entry>> call, Throwable t) {
+                        Toast.makeText(context, "API_WORD_NOT_Respond\n" + t.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }));
+        return sound;
     }
 }
