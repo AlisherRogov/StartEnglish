@@ -1,21 +1,28 @@
 package ru.technopark.startenglish.wordsUI;
 
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.technopark.startenglish.MainActivity;
 import ru.technopark.startenglish.R;
 import ru.technopark.startenglish.word.Definition;
 import ru.technopark.startenglish.word.WordViewModel;
@@ -103,6 +110,46 @@ public class WordCardFragment extends Fragment {
                 }
             }
         });*/
+
+        final String[] audioUrl = new String[1];
+        wvm.soundUrl.observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if (!s.equals("")) {
+                    audioUrl[0] = s;
+//                    textView.setText(s);
+                } else {
+                    audioUrl[0] = "https://media.merriam-webster.com/audio/prons/en/us/mp3/c/cat00001.mp3";
+                }
+            }
+        });
+
+        final MediaPlayer[] mPlayer = new MediaPlayer[1];
+        Button button2 = v.findViewById(R.id.sound_button);
+        button2.setOnClickListener(view -> {
+            button2.setEnabled(false);
+            mPlayer[0] = new MediaPlayer();
+            mPlayer[0].setAudioStreamType(AudioManager.STREAM_MUSIC);
+            try{
+                mPlayer[0].setDataSource(audioUrl[0]);
+
+                mPlayer[0].prepare();
+
+                mPlayer[0].start();
+                Toast.makeText(getContext(),"Playing",Toast.LENGTH_SHORT).show();
+            }catch (IOException | SecurityException | IllegalStateException | IllegalArgumentException e){
+                e.printStackTrace();
+            }
+
+            mPlayer[0].setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+                    Toast.makeText(getContext(),"End",Toast.LENGTH_SHORT).show();
+                    button2.setEnabled(true);
+                }
+            });
+
+        });
 
         return v;
     }
