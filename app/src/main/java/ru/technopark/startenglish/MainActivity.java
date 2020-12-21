@@ -2,14 +2,24 @@ package ru.technopark.startenglish;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
+import ru.technopark.startenglish.menu.AddModuleFragment;
 import ru.technopark.startenglish.menu.AddWordFragment;
+import ru.technopark.startenglish.module.Module;
+import ru.technopark.startenglish.module.ModuleViewModel;
 import ru.technopark.startenglish.modulesUI.ModulesFragment;
 import ru.technopark.startenglish.modulesUI.OnModuleSelectedListener;
+import ru.technopark.startenglish.word.Word;
+import ru.technopark.startenglish.word.WordViewModel;
+import ru.technopark.startenglish.wordsUI.DefinitionAdapter;
 import ru.technopark.startenglish.wordsUI.OnWordSelectedListener;
 import ru.technopark.startenglish.wordsUI.WordCardFragment;
 import ru.technopark.startenglish.wordsUI.WordsFragment;
@@ -21,6 +31,26 @@ public class MainActivity extends AppCompatActivity implements OnModuleSelectedL
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ModuleViewModel mvm = new ViewModelProvider(this).get(ModuleViewModel.class);
+        mvm.createModule("first");
+        mvm.createModule("second");
+        mvm.createModule("third");
+        mvm.createModule("fourth");
+
+
+        WordViewModel wordViewModel = new ViewModelProvider(this).get(WordViewModel.class);
+
+        wordViewModel.getWord("toy");
+        mvm.getModule("first");
+        wordViewModel.lastWord.observe(MainActivity.this, new Observer<Word>() {
+            @Override
+            public void onChanged(Word word) {
+                if (word.getDefinitions() != null) {
+                    wordViewModel.saveWord(mvm.lastModule.getValue());
+                }
+            }
+        });
 
         if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
             getSupportFragmentManager()
@@ -46,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements OnModuleSelectedL
                 onAddWordSelected();
                 return true;
             case R.id.action_add_module:
-                // add module fragment
+                onAddModuleSelected();
                 return true;
             case R.id.action_settings:
                 // setting fragment
@@ -91,6 +121,16 @@ public class MainActivity extends AppCompatActivity implements OnModuleSelectedL
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, addWordFragment)
+                .addToBackStack(AddWordFragment.class.getSimpleName())
+                .commit();
+    }
+
+    private void onAddModuleSelected() {
+        AddModuleFragment addModuleFragment = new AddModuleFragment();
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, addModuleFragment)
                 .addToBackStack(AddWordFragment.class.getSimpleName())
                 .commit();
     }

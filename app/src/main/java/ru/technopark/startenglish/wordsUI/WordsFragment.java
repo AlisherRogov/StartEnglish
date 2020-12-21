@@ -9,10 +9,16 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ru.technopark.startenglish.R;
+import ru.technopark.startenglish.module.Module;
+import ru.technopark.startenglish.module.ModuleViewModel;
+import ru.technopark.startenglish.word.Word;
+import ru.technopark.startenglish.word.WordViewModel;
 
 public class WordsFragment extends Fragment {
     private final static String MODULENAME = "moduleName";
@@ -26,9 +32,6 @@ public class WordsFragment extends Fragment {
 
         if (getArguments() != null)
             moduleName = getArguments().getString(MODULENAME, "default");
-        // System.out.println(moduleName);
-
-        wordAdapter = new WordAdapter(moduleName);
     }
 
     @Nullable
@@ -37,7 +40,28 @@ public class WordsFragment extends Fragment {
         final View view = inflater.inflate(R.layout.word_list, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.word_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        recyclerView.setAdapter(wordAdapter);
+
+        ModuleViewModel wvm = new ViewModelProvider(this).get(ModuleViewModel.class);
+        wvm.getAllModules();
+        wvm.getModule(moduleName);
+
+        wvm.lastModule.observe(getViewLifecycleOwner(), new Observer<Module>() {
+            @Override
+            public void onChanged(Module module) {
+                if (module.getWords() != null) {
+                    System.out.println(module.getModuleName());
+                    System.out.println("Null list in constructor of wordAdapter");
+
+//                    for (Word w : module.getWords()) {
+//                        System.out.println(w.getDefinitions().toString());
+//                    }
+
+                    wordAdapter = new WordAdapter(module.getWords());
+                    recyclerView.setAdapter(wordAdapter);
+                }
+            }
+        });
+
         recyclerView.setHasFixedSize(true);
         return view;
     }

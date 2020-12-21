@@ -8,4 +8,8 @@
     <string name="action_add_module">Add module</string>
     <string name="find_word">find word</string>
     <string name="add_word">add word</string>
+    <string name="add_module">add module</string>
+    <string name="word_hint">word</string>
+    <string name="module_hint">word</string>
+    <string name="definitions_hint">definitions</string>
 </resources>
