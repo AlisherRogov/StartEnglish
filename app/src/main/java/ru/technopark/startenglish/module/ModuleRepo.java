@@ -6,18 +6,18 @@ import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import ru.technopark.startenglish.db.AppDatabase;
 import ru.technopark.startenglish.db.ModuleDao;
 import ru.technopark.startenglish.db.ModuleWithWords;
+import ru.technopark.startenglish.db.ModuleWordCrossRefDao;
 
 public class ModuleRepo {
     private final Context context;
     private final ModuleDao moduleDao;
+    private final ModuleWordCrossRefDao moduleWordCrossRefDao;
     MutableLiveData<Module> lastModule = new MutableLiveData<>();
     MutableLiveData<List<Module>> allModules = new MutableLiveData<>();
 
@@ -25,6 +25,7 @@ public class ModuleRepo {
         this.context = context;
         AppDatabase db = AppDatabase.getDatabase(context);
         moduleDao = db.moduleDao();
+        moduleWordCrossRefDao = db.moduleWordCrossRefDao();
         lastModule.setValue(new Module());
         allModules.setValue(new ArrayList<>());
     }
@@ -48,12 +49,18 @@ public class ModuleRepo {
         LiveData<List<Module>> allModulesWithWords = moduleDao.getAllModulesWithWords();
         allModulesWithWords.observeForever(moduleWithWords -> {
             if (moduleWithWords != null) {
-                allModules.setValue(moduleWithWords);
-                Log.d("ali", moduleWithWords.toString());
+                AppDatabase.databaseWriteExecutor.execute(() -> {
+                    for (Module module : moduleWithWords) {
+                        module.setSize((int) moduleWordCrossRefDao.getModuleSize(moduleDao.getModuleId(module.getModuleName())));
+                    }
+                    allModules.postValue(moduleWithWords);
+                });
             } else {
-                Toast.makeText(context, "No module not found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "No module found", Toast.LENGTH_SHORT).show();
             }
+
         });
+
         return allModules;
     }
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -30,7 +31,7 @@
                 android:gravity="start"
                 android:layout_marginStart="@dimen/module_text_margin"
                 android:textSize="@dimen/module_text_size"
-                android:text="@string/module_model_name" />
+                tools:text="@string/module_model_name" />
 
             <TextView
                 android:id="@+id/module_model_word_count"
@@ -39,7 +40,7 @@
                 android:gravity="start"
                 android:layout_marginStart="@dimen/module_text_margin"
                 android:textSize="@dimen/module_text_size"
-                android:text="@string/module_model_word_count" />
+                tools:text="@string/module_model_word_count" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

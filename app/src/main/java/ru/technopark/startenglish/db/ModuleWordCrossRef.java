@@ -27,4 +27,5 @@ public class ModuleWordCrossRef {
     public void setWordId(long wordId) {
         this.wordId = wordId;
     }
+
 }
