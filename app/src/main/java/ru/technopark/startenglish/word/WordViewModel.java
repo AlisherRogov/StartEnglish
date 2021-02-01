@@ -42,7 +42,7 @@ public class WordViewModel extends AndroidViewModel {
         }
     }
 
-    public void saveWord(Module moduleName) {
+    public void saveWord(String moduleName) {
         wordRepo.saveWordToLocalDb(moduleName);
     }
 

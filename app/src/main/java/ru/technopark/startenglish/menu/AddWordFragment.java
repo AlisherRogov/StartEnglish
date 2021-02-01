@@ -81,8 +81,8 @@ public class AddWordFragment extends Fragment {
         addButton.setOnClickListener(v12 -> {
             wvm.getWord(editTextWord.getText().toString());
             wvm.lastWord.observe(getViewLifecycleOwner(), word -> {
-                mvm.getModule(spinner.getText().toString());
-                mvm.lastModule.observe(getViewLifecycleOwner(), module -> wvm.saveWord(module));
+//                mvm.getModule(spinner.getText().toString());
+                mvm.lastModule.observe(getViewLifecycleOwner(), module -> wvm.saveWord(spinner.getText().toString()));
             });
         });
 

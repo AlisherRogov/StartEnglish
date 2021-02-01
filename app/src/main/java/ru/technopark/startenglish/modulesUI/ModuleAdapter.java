@@ -36,8 +36,8 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleViewHolder> {
         String name = dataSource.getList().get(position).getModuleName();
 //        int wordCount = dataSource.getList().get(position).getWords().size();
         int wordCount = 0;
-        if (dataSource.getList().get(position).getWords() != null)
-            wordCount = dataSource.getList().get(position).getWords().size();
+        if (dataSource.getList().get(position).getSize() != 0)
+            wordCount = dataSource.getList().get(position).getSize();
         holder.getName().setText(name);
         holder.getWordCount().setText(String.valueOf(wordCount));
     }

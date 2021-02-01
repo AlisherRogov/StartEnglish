@@ -19,6 +19,8 @@ public class Module {
     @Ignore
     @Nullable
     private List<Word> words;
+    @Ignore
+    private int size;
 
     public Module(@NonNull String moduleName, @Nullable List<Word> words) {
         this.moduleName = moduleName;
@@ -53,6 +55,16 @@ public class Module {
 
     public void setModuleId(long moduleId) {
         this.moduleId = moduleId;
+    }
+
+    public int getSize() {
+        if (words == null)
+            return size;
+        else return words.size();
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 }
 

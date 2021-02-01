@@ -121,9 +121,9 @@ class WordRepo {
         return result;
     }
 
-    void saveWordToLocalDb(Module module) {
+    void saveWordToLocalDb(String module) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            if (!moduleDao.isModuleExist(module.getModuleName())) {
+            if (!moduleDao.isModuleExist(module)) {
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(() -> Toast.makeText(context, MODULE_NOT_FOUND, Toast.LENGTH_SHORT).show());
             } else {
@@ -138,9 +138,8 @@ class WordRepo {
                         }
                     }
                     long wordId = wordDao.getWordId(w.getWord());
-                    Handler handler = new Handler(Looper.getMainLooper());
-                    handler.post(() -> Toast.makeText(context, module.getModuleName(), Toast.LENGTH_SHORT).show());
-                    moduleWordCrossRefDao.insert(new ModuleWordCrossRef(module.getModuleId(), wordId));
+                    long moduleId = moduleDao.getModuleId(module);
+                    moduleWordCrossRefDao.insert(new ModuleWordCrossRef(moduleId, wordId));
                 }
             }
         });
@@ -153,8 +152,8 @@ class WordRepo {
                     public void onResponse(Call<List<SoundApi.Entry>> call, Response<List<SoundApi.Entry>> response) {
                         if (response.isSuccessful() && response.body() != null) {
                             String s = response.body().get(0).hwi.prs.get(0).sound.audio;
-                            sound.postValue("https://media.merriam-webster.com/audio/prons/en/us/mp3/" + s.charAt(0) + "/" + s + ".mp3");
                             Log.d("resp", response.body().toString());
+                            sound.postValue("https://media.merriam-webster.com/audio/prons/en/us/mp3/" + s.charAt(0) + "/" + s + ".mp3");
 
                         } else {
                             Toast.makeText(context, "API_WORD_NOT_FOUND", Toast.LENGTH_SHORT).show();

@@ -22,6 +22,10 @@ public interface ModuleDao {
     LiveData<ModuleWithWords> getModuleWithWords(String search);
 
     @Transaction
+    @Query("SELECT moduleId FROM module_of_words WHERE moduleName LIKE :search")
+    long getModuleId(String search);
+
+    @Transaction
     @Query("SELECT * FROM module_of_words")
     LiveData<List<Module>> getAllModulesWithWords();
 
